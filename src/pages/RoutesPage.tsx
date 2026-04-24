@@ -1,6 +1,34 @@
 import { useState } from 'react';
-import { DETAILED_ROUTES } from '@/data/content';
+import { DETAILED_ROUTES, BAROQUE_OBJECTS, CLASSICISM_OBJECTS } from '@/data/content';
 import Icon from '@/components/ui/icon';
+
+const STOP_IMAGES: Record<string, string> = {
+  menshikov: BAROQUE_OBJECTS.menshikov?.mainImage || '',
+  petrovskiy: BAROQUE_OBJECTS.petrovskiy?.mainImage || '',
+  troyekurov: BAROQUE_OBJECTS.troyekurov?.mainImage || '',
+  kliment: BAROQUE_OBJECTS.kliment?.mainImage || '',
+  novodevichiy: BAROQUE_OBJECTS.novodevichiy?.mainImage || '',
+  pokrovka: BAROQUE_OBJECTS.pokrovka?.mainImage || '',
+  pashkov: CLASSICISM_OBJECTS.pashkov?.mainImage || '',
+  senatskiy: CLASSICISM_OBJECTS.senatskiy?.mainImage || '',
+  golitsynskaya: CLASSICISM_OBJECTS.golitsynskaya?.mainImage || '',
+  vospitatelny: CLASSICISM_OBJECTS.vospitatelny?.mainImage || '',
+  tsaritsyno: CLASSICISM_OBJECTS.tsaritsyno?.mainImage || '',
+};
+
+const STOP_OBJECT_ID: Record<string, string> = {
+  'Меншикова башня': 'menshikov',
+  'Высоко-Петровский монастырь': 'petrovskiy',
+  'Палаты Троекурова': 'troyekurov',
+  'Церковь Климента': 'kliment',
+  'Новодевичий монастырь': 'novodevichiy',
+  'Покровская церковь (Богоявленский собор в Елохово)': 'pokrovka',
+  'Дом Пашкова': 'pashkov',
+  'Сенатский дворец в Кремле': 'senatskiy',
+  'Голицынская больница': 'golitsynskaya',
+  'Воспитательный дом': 'vospitatelny',
+  'Царицыно': 'tsaritsyno',
+};
 
 interface RoutesPageProps {
   initialRoute?: string;
@@ -10,7 +38,7 @@ interface RoutesPageProps {
 export default function RoutesPage({ initialRoute, onNavigate }: RoutesPageProps) {
   const defaultId = initialRoute && DETAILED_ROUTES.find(r => r.id === initialRoute)
     ? initialRoute
-    : DETAILED_ROUTES[0].id;
+    : 'baroque';
   const [activeId, setActiveId] = useState(defaultId);
   const route = DETAILED_ROUTES.find(r => r.id === activeId) || DETAILED_ROUTES[0];
 
@@ -98,7 +126,19 @@ export default function RoutesPage({ initialRoute, onNavigate }: RoutesPageProps
 
                 {/* Content */}
                 <div className="flex-1 pb-0 pt-1">
-                  <div className="p-6 mb-0" style={{ backgroundColor: 'var(--color-parchment)' }}>
+                  <div className="mb-0 overflow-hidden" style={{ backgroundColor: 'var(--color-parchment)' }}>
+                    {/* Photo if exists */}
+                    {STOP_IMAGES[STOP_OBJECT_ID[stop.name] || ''] && (
+                      <div style={{ height: 160, overflow: 'hidden' }}>
+                        <img
+                          src={STOP_IMAGES[STOP_OBJECT_ID[stop.name] || '']}
+                          alt={stop.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => { (e.target as HTMLImageElement).parentElement!.style.display = 'none'; }}
+                        />
+                      </div>
+                    )}
+                    <div className="p-6">
                     <p className="font-sans text-xs uppercase tracking-widest mb-1" style={{ color: route.colorHex }}>
                       {stop.styleNote}
                       {stop.address && ` · ${stop.address}`}
@@ -109,6 +149,16 @@ export default function RoutesPage({ initialRoute, onNavigate }: RoutesPageProps
                     <p className="font-sans text-sm leading-relaxed" style={{ color: 'var(--color-stone)' }}>
                       {stop.historicalNote}
                     </p>
+                    {STOP_OBJECT_ID[stop.name] && (
+                      <button
+                        onClick={() => onNavigate('objects', STOP_OBJECT_ID[stop.name])}
+                        className="mt-4 flex items-center gap-1 font-sans text-xs uppercase tracking-wide transition-opacity hover:opacity-70"
+                        style={{ color: route.colorHex }}
+                      >
+                        Подробнее об объекте <Icon name="ArrowRight" size={11} />
+                      </button>
+                    )}
+                    </div>
                   </div>
                 </div>
               </div>

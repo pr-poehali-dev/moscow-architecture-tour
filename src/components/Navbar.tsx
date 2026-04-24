@@ -99,7 +99,6 @@ export default function Navbar({ current, onNavigate }: NavbarProps) {
             {[
               { id: 'routes', label: 'Маршруты' },
               { id: 'map', label: 'Карта' },
-              { id: 'bibliography', label: 'Библиография' },
               { id: 'about', label: 'О проекте' },
             ].map((item) => (
               <button key={item.id} onClick={() => handleNav(item.id)} className="nav-link font-sans text-sm"
@@ -134,7 +133,6 @@ export default function Navbar({ current, onNavigate }: NavbarProps) {
             {[
               { id: 'routes', label: 'Маршруты' },
               { id: 'map', label: 'Карта' },
-              { id: 'bibliography', label: 'Библиография' },
               { id: 'about', label: 'О проекте' },
             ].map((item) => (
               <button key={item.id} onClick={() => handleNav(item.id)} className="text-left px-5 py-2 font-sans text-sm" style={{ color: 'var(--color-ink)' }}>{item.label}</button>

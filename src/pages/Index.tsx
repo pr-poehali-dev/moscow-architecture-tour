@@ -7,8 +7,6 @@ import ObjectsPage from '@/pages/ObjectsPage';
 import StylesPage from '@/pages/StylesPage';
 import MapPage from '@/pages/MapPage';
 import AboutPage from '@/pages/AboutPage';
-import BibliographyPage from '@/pages/BibliographyPage';
-
 export default function Index() {
   const [section, setSection] = useState('home');
   const [subId, setSubId] = useState<string | undefined>(undefined);
@@ -32,7 +30,6 @@ export default function Index() {
       case 'map':
         return <MapPage />;
       case 'bibliography':
-        return <BibliographyPage />;
       case 'about':
       case 'team':
         return <AboutPage />;
