@@ -7,18 +7,15 @@ import ObjectsPage from '@/pages/ObjectsPage';
 import StylesPage from '@/pages/StylesPage';
 import MapPage from '@/pages/MapPage';
 import AboutPage from '@/pages/AboutPage';
-
-type Section = 'home' | 'routes' | 'objects' | 'styles' | 'map' | 'about' | 'team' | 'bibliography';
+import BibliographyPage from '@/pages/BibliographyPage';
 
 export default function Index() {
-  const [section, setSection] = useState<Section>('home');
-  const [routeId, setRouteId] = useState<string | undefined>(undefined);
-  const [objectId, setObjectId] = useState<string | undefined>(undefined);
+  const [section, setSection] = useState('home');
+  const [subId, setSubId] = useState<string | undefined>(undefined);
 
   const handleNavigate = (s: string, id?: string) => {
-    setSection(s as Section);
-    if (s === 'routes') setRouteId(id);
-    if (s === 'objects') setObjectId(id);
+    setSection(s);
+    setSubId(id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -27,16 +24,17 @@ export default function Index() {
       case 'home':
         return <HomePage onNavigate={handleNavigate} />;
       case 'routes':
-        return <RoutesPage initialRoute={routeId} onNavigate={handleNavigate} />;
+        return <RoutesPage initialRoute={subId} onNavigate={handleNavigate} />;
       case 'objects':
-        return <ObjectsPage initialObject={objectId} />;
+        return <ObjectsPage initialObject={subId} onNavigate={handleNavigate} />;
       case 'styles':
-        return <StylesPage />;
+        return <StylesPage initialStyle={subId} onNavigate={handleNavigate} />;
       case 'map':
         return <MapPage />;
+      case 'bibliography':
+        return <BibliographyPage />;
       case 'about':
       case 'team':
-      case 'bibliography':
         return <AboutPage />;
       default:
         return <HomePage onNavigate={handleNavigate} />;
@@ -45,11 +43,11 @@ export default function Index() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--color-cream)' }}>
-      <Navbar current={section} onNavigate={(s) => handleNavigate(s)} />
+      <Navbar current={section} onNavigate={handleNavigate} />
       <main style={{ flex: 1 }}>
         {renderPage()}
       </main>
-      <Footer onNavigate={(s) => handleNavigate(s)} />
+      <Footer onNavigate={handleNavigate} />
     </div>
   );
 }
